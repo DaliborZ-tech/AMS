@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # --- my apps ---
     "app_sprava_montazi",
-    "django_dump_load_utf8",
 ]
 
 MIDDLEWARE = [
