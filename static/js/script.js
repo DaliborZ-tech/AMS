@@ -1,3 +1,4 @@
+console.log("Skript partial načítání načten");
 
 document.addEventListener("DOMContentLoaded", () => {
   // Zúžení sidebaru + otočení toggle tlačítka
@@ -79,3 +80,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+   document.addEventListener('DOMContentLoaded', () => {
+       const partialLinks = document.querySelectorAll('a[data-template]');
+       console.log('Registrováno odkazů načítajících partial:', partialLinks.length);
+
+       partialLinks.forEach(link => {
+           link.addEventListener('click', event => {
+               event.preventDefault();
+               console.log('Kliknutí na partial odkaz zachyceno.');
+
+               const url = event.currentTarget.getAttribute('href');
+               fetch(url)
+                   .then(response => {
+                       if (!response.ok) {
+                           throw new Error('Chyba při načítání šablony');
+                       }
+                       return response.text();
+                   })
+                   .then(html => {
+                       const container = document.querySelector('.content-wrapper');
+                       if (container) {
+                           container.innerHTML = html;
+                       } else {
+                           console.error('Element .content-wrapper nebyl nalezen!');
+                       }
+                   })
+                   .catch(error => {
+                       console.error('Došlo k chybě:', error);
+                   });
+           });
+       });
+   });

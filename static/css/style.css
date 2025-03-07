@@ -7,6 +7,8 @@
     --accent-clr: #5e63ff;
     --secondary-text-clr: #b0b3c1;
     --gradient-clr: linear-gradient(to right, var(--base-clr), #202132, var(--base-clr));
+    --shadow-clr: rgba(0, 255, 255, 0.5);
+    --field-clr: #2d2e47;
 }
 *{
     margin: 0;
@@ -45,6 +47,7 @@ aside{
     align-self: start;
     grid-area: sidebar;
     display: block;
+    box-shadow: 0 0 7px var(--shadow-clr);
 }
 #sidebar{
     box-sizing: border-box;
@@ -161,15 +164,72 @@ main p{
     margin-top: 5px;
     margin-bottom: 15px;
 }
-.container{
-    border: 1px solid var(--line-clr);
-    border-radius: 0.7em;
-    margin-bottom: 20px;
-    padding: min(3em, 15%);
+.content-wrapper{
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 h2, p {
     margin-top: 1em;
 }
+.login-container {
+    background-color: var(--base-clr);
+    border: 1px solid var(--line-clr);
+    box-shadow: 0 0 7px var(--shadow-clr);
+    padding: 2em;
+    border-radius: 0.5em;
+    min-width: 350px;
+    max-width: 400px;
+    margin: auto;
+}
+.login-container h2{
+    text-align: center;
+    margin-bottom: 1em;
+    margin-top: 0;
+}
+.input-field {
+    width: 100%;
+    padding: 10px;
+    max-width: 400px;
+    margin-bottom: 1em;
+    border: 1px solid var(--line-clr);
+    border-radius: 0.4em;
+    background-color: var(--field-clr);
+    color: var(--text-clr);
+    font-size: 16px;
+}
+.input-field:active, .input-field:focus {
+    box-shadow: 0 0 7px var(--shadow-clr);
+}
+.login-form .btn {
+    display: block;
+    margin: 1em auto 0 auto;
+}
+.btn {
+    padding: 0.85em 1.2em;
+    background-color: var(--accent-clr);
+    border: none;
+    border-radius: 0.5em;
+    color: var(--text-clr);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--hover-clr);
+    box-shadow: 0 0 7px var(--shadow-clr);
+}
+
+
+.btn-primary {
+    /* případně další vlastnosti nebo jen ponechat defaultní styl z .btn */
+}
+
+
+
 footer{
     grid-area: footer;
     background: var(--gradient-clr);
