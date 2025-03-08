@@ -35,4 +35,6 @@ class AjaxLoginView(View):
 class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
-        return JsonResponse({"success": True})
+        # Přesměrujeme na homepage - zde můžete upravit URL dle potřeby
+        return JsonResponse({"success": True, "redirect_url": "/"})
+

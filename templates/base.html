@@ -17,28 +17,6 @@
 
 </body>
     <script src="{% static 'js/script.js' %}"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const sidebar = document.getElementById("sidebar");
-      const toggleBtn = document.getElementById("toggle-btn");
 
-      document.querySelectorAll(".dropdown-btn").forEach((btn) => {
-        const arrowIcon = btn.querySelector(".bi-arrow-bar-down");
-        btn.addEventListener("click", () => {
-          // Zkontrolujte, zda existuje nextElementSibling
-          if (btn.nextElementSibling) {
-            btn.nextElementSibling.classList.toggle("show");
-          }
-          if (arrowIcon) {
-            arrowIcon.classList.toggle("rotated");
-          }
-          if (sidebar.classList.contains("close")) {
-            sidebar.classList.toggle("close");
-            toggleBtn.classList.toggle("active");
-          }
-        });
-      });
-    });
-    </script>
 {% endblock scripts %}
 </html>
