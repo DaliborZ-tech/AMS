@@ -1,9 +1,9 @@
-from datetime import datetime, date
+from datetime import datetime
 
 from django.db import models
-from django.db.models import Model, DecimalField, CharField, ManyToManyField, \
+from django.db.models import Model, DecimalField, CharField, \
     IntegerField, TextField, DateField, DateTimeField, ForeignKey, \
-    BooleanField, CASCADE, SET_NULL, EmailField
+    BooleanField, SET_NULL, EmailField
 
 
 STATUS_CHOICES = [

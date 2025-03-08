@@ -1,6 +1,6 @@
 <div class="login-container">
     <h2>Přihlášení</h2>
-    <form method="post" class="login-form">
+    <form action="{% url 'ajax_login' %}" method="post" class="login-form">
         {% csrf_token %}
         <div class="form-group">
             {{ form.username }}
