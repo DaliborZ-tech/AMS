@@ -83,6 +83,9 @@ class Status(Model):
     def __str__(self):
         return self.status
 
+    class Meta:
+        verbose_name_plural = "Statuses"
+
 
 class Advice(Model):
     created = DateTimeField(auto_now_add=True, verbose_name='Vytvořeno')
