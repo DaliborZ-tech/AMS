@@ -1,9 +1,9 @@
 from datetime import datetime, date
 
 from django.db import models
-from django.db.models import Model, DecimalField, CharField, ManyToManyField, IntegerField, \
-    TextField, DateField, DateTimeField, ForeignKey, BooleanField, CASCADE, \
-    EmailField
+from django.db.models import Model, DecimalField, CharField, ManyToManyField, \
+    IntegerField, TextField, DateField, DateTimeField, ForeignKey, \
+    BooleanField, CASCADE, EmailField
 
 
 STATUS_CHOICES = [
@@ -71,23 +71,19 @@ class Contact(Model):
 
 class Status(Model):
     created = DateTimeField(auto_now_add=True)
-    status = CharField(max_length=32, null=False, blank=False, choices=STATUS_CHOICES)
+    status = CharField(max_length=32, null=False, blank=False,
+                       choices=STATUS_CHOICES)
 
     def __str__(self):
         return self.status
 
 
-class AdviceStatus(Model):
-    advice_status = CharField(max_length=32, null=False, blank=False)
-
-    def __str__(self):
-        return self.advice_status
-
-
 class Advice(Model):
     created = DateTimeField(auto_now_add=True)
-    whom = CharField(max_length=32, null=False, blank=False, choices=WHOM_CHOICES)
-    status = CharField(max_length=32, null=False, blank=False, choices=ADVICE_STATUS_CHOICES)
+    whom = CharField(max_length=32, null=False, blank=False,
+                     choices=WHOM_CHOICES)
+    status = CharField(max_length=32, null=False, blank=False,
+                       choices=ADVICE_STATUS_CHOICES)
     advice = TextField(null=False, blank=False)
 
     def __str__(self):
@@ -115,8 +111,10 @@ class Team(Model):
     phone = CharField(max_length=16, null=False, blank=False)
     email = EmailField(max_length=64, null=True, blank=True)
     web = CharField(max_length=64, null=True, blank=True)
-    price_per_hour = DecimalField(null=True, blank=True)
-    price_per_km = DecimalField(null=True, blank=True)
+    price_per_hour = DecimalField(max_digits=10, decimal_places=2,
+                                  null=True, blank=True)
+    price_per_km = DecimalField(max_digits=10, decimal_places=2,
+                                null=True, blank=True)
     region = CharField(max_length=32, null=True, blank=True)
     terms = TextField(null=True, blank=True)
     active = BooleanField(default=True)
