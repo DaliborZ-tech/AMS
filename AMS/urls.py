@@ -12,6 +12,9 @@ urlpatterns = [
     path('ajax_login/', AjaxLoginView.as_view(), name='ajax_login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path("dashboard/", Dashboard.as_view(), name="dashboard"),
+    path("order_summary/", OrderSummaryView.as_view(),
+         name="order_summary"),
+
 
 
 ]

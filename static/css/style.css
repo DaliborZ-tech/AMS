@@ -9,6 +9,32 @@
     --gradient-clr: linear-gradient(to right, var(--base-clr), #202132, var(--base-clr));
     --shadow-clr: rgba(0, 255, 255, 0.5);
     --field-clr: #2d2e47;
+    --logout-clr: #ea6969;
+    --login-clr: rgba(0, 255, 255, 0.6);
+    --table-header-clr: #3b3c53;
+}
+@keyframes shake {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  2% {
+    transform: translate(-2px, 0) rotate(-3deg);
+  }
+  4% {
+    transform: translate(2px, 0) rotate(3deg);
+  }
+  6% {
+    transform: translate(-2px, 0) rotate(-3deg);
+  }
+  8% {
+    transform: translate(2px, 0) rotate(3deg);
+  }
+  10% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
 }
 *{
     margin: 0;
@@ -17,6 +43,40 @@
 html{
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdant, sans-serif;
     line-height: 1.5rem;
+}
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav a{
+    text-decoration: none;
+    color: var(--login-clr);
+    font-weight: bolder;
+    margin-right: 3px;
+    margin-left: auto;
+}
+nav a.logout{
+    color: var(--logout-clr);
+    animation: none;
+}
+nav a.logout:hover{
+    color: indianred;
+    animation: none;
+    text-shadow: 0 0 7px indianred;
+}
+nav a:hover{
+    color: var(--shadow-clr);
+    text-shadow: 0 0 10px var(--shadow-clr);
+    text-decoration: underline;
+}
+.bi.bi-person-check{
+    color: var(--login-clr);
+    animation: shake 1s infinite;
+}
+.bi.bi-person-dash{
+    color: var(--logout-clr);
+    animation: shake 3s infinite;
 }
 body {
     min-height: 100vh;
@@ -119,6 +179,7 @@ aside{
 .dropdown-btn{
     background-color: var(--base-clr);
     border: none;
+    font-weight: bold;
 }
 #sidebar .sub-menu a{
     padding-left: 2em;
@@ -152,6 +213,7 @@ ul.sub-menu{
 
 aside ul {
     padding-left: 0;
+    font-weight: bold;
 }
 main{
     grid-area: main;
@@ -200,6 +262,7 @@ h2, p {
     background-color: var(--field-clr);
     color: var(--text-clr);
     font-size: 16px;
+    font-weight: bold;
 }
 .input-field:active, .input-field:focus {
     box-shadow: 0 0 7px var(--shadow-clr);
@@ -215,6 +278,7 @@ h2, p {
     border-radius: 0.5em;
     color: var(--text-clr);
     cursor: pointer;
+    font-weight: bold;
     transition: background-color 0.3s ease;
 }
 
@@ -227,7 +291,75 @@ h2, p {
 .btn-primary {
     /* případně další vlastnosti nebo jen ponechat defaultní styl z .btn */
 }
+.btn.btn-primary svg{
+    margin-right: 0.5em;
+}
+.order-summary-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: var(--base-clr);
+  border: 1px solid var(--line-clr);
+  box-shadow: 0 0 7px var(--shadow-clr);
+  border-radius: 8px;
+}
 
+.order-summary-container h2 {
+  color: var(--text-clr);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--field-clr);
+  color: var(--text-clr);
+}
+
+.order-table th,
+.order-table td {
+  padding: 12px 15px;
+  border: 1px solid var(--line-clr);
+  text-align: left;
+}
+
+.order-table thead {
+  background-color: var(--table-header-clr);
+}
+
+.order-table tbody tr:nth-child(even) {
+  background-color: var(--field-clr);
+}
+
+.order-table tbody tr:hover {
+  background-color: var(--hover-clr);
+}
+.styled-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.styled-pagination a {
+  text-decoration: none;
+  padding: 0.5em 0.85em;
+  background-color: var(--hover-clr);
+  border: none;
+  border-radius: 0.5em;
+  color: var(--text-clr);
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.styled-pagination a:hover {
+  background-color: var(--hover-clr);
+    box-shadow: 0 0 7px var(--shadow-clr);
+}
+
+.styled-pagination span {
+  margin: 0 10px;
+  font-weight: bold;
+}
 
 
 footer{

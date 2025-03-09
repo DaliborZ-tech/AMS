@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Obsluha odkazů pro načítání partial šablon přes AJAX
+  // Obsluha odkazů pro načítání partial šablon přes AJAX (sidebar)
   const partialLinks = document.querySelectorAll("a.anchoresidebar");
   console.log("Registrováno odkazů načítajících partial:", partialLinks.length);
 
@@ -89,7 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const container = document.querySelector(".content-wrapper");
           if (container) {
             container.innerHTML = html;
-            // Po načtení partial šablony zaregistrujeme event pro přihlašovací formulář
+            // Po načtení partial šablony zaregistrujeme eventy znovu
+            registerAjaxLinks();
             registerLoginForm();
           } else {
             console.error("Element .content-wrapper nebyl nalezen!");
@@ -100,6 +101,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
   });
+
+  // Funkce pro registraci AJAX odkazů (např. paginátor)
+  function registerAjaxLinks() {
+    const ajaxLinks = document.querySelectorAll("a.ajax-link");
+    console.log("Registrováno AJAX odkazů:", ajaxLinks.length);
+    ajaxLinks.forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        console.log("Kliknutí na AJAX link zachyceno.");
+        const url = link.getAttribute("href");
+        fetch(url, {
+          headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("Chyba při načítání partial šablony");
+            }
+            return response.text();
+          })
+          .then(html => {
+            const container = document.querySelector(".content-wrapper");
+            if (container) {
+              container.innerHTML = html;
+              // Znovu zaregistrujeme AJAX odkazy a eventy formulářů
+              registerAjaxLinks();
+              registerLoginForm();
+            } else {
+              console.error("Element .content-wrapper nebyl nalezen!");
+            }
+          })
+          .catch(error => {
+            console.error("Došlo k chybě:", error);
+          });
+      });
+    });
+  }
 
   // Funkce pro registraci posluchače události formuláře pro přihlášení
   function registerLoginForm() {
@@ -119,42 +156,20 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(response => response.json())
           .then(result => {
             if (result.success) {
-              // Aktualizujeme odkaz pro přihlášeného uživatele
-              const authLink = document.getElementById("auth-link");
-              if (authLink) {
-                authLink.href = "/logout/";
-                authLink.textContent = "Odhlásit se";
-              }
-              // Stránku jednoduše obnovíme
-              window.location.reload();
+              // Aktualizujeme odkaz nebo provedeme další potřebné akce
+              console.log("Přihlášení bylo úspěšné.");
             } else {
-              alert(result.error);
+              console.error("Přihlášení selhalo.");
             }
           })
           .catch(error => {
-            console.error("Chyba při AJAX přihlášení:", error);
+            console.error("Došlo k chybě při odesílání formuláře:", error);
           });
       });
     }
   }
 
-  const logoutLink = document.getElementById("auth-link");
-  if (logoutLink && logoutLink.getAttribute("href").includes("/logout/")) {
-    logoutLink.addEventListener("click", event => {
-      event.preventDefault();
-      fetch(logoutLink.href, {
-        headers: { "X-Requested-With": "XMLHttpRequest" }
-      })
-        .then(response => response.json())
-        .then(result => {
-          if (result.success && result.redirect_url) {
-            // Přesměrujeme celý prohlížeč na zadanou URL
-            window.location.href = result.redirect_url;
-          }
-        })
-        .catch(error => {
-          console.error("Chyba při odhlašování:", error);
-        });
-    });
-  }
+  // Po načtení DOM zaregistrujeme AJAX odkazy (paginátor) a formulář
+  registerAjaxLinks();
+  registerLoginForm();
 });

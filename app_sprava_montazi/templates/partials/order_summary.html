@@ -1,0 +1,50 @@
+<div class="order-summary-container">
+  <h2>Přehled objednávek</h2>
+  <table class="order-table">
+    <thead>
+      <tr>
+        <th>Mandant</th>
+        <th>Sklad</th>
+        <th>Číslo zakázky</th>
+        <th>Zákazník</th>
+        <th>Město</th>
+        <th>Okres</th>
+        <th>Evidence</th>
+        <th>Doručení</th>
+        <th>Realizace kým</th>
+        <th>Montážní tým</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.mandant }}</td>
+        <td>{{ order.store }}</td>
+        <td>{{ order.order_number }}</td>
+        <td>{{ order.customer_name }}</td>
+        <td>{{ order.place.city }}</td>
+        <td>{{ order.place.district }}</td>
+        <td>{{ order.evidence_term|date:"d.m.Y" }}</td>
+        <td>{{ order.delivery_term|date:"d.m.Y" }}</td>
+        <td>{{ order.team_type }}</td>
+        <td>{{ order.team }}</td>
+        <td>{{ order.status }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="11">Žádné objednávky k zobrazení.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="styled-pagination">
+      {% if orders.has_previous %}
+        <a class="ajax-link" href="{% url 'order_summary' %}?page={{ orders.previous_page_number }}">Zpět</a>
+      {% endif %}
+      <span>Strana {{ orders.number }} z {{ orders.paginator.num_pages }}</span>
+      {% if orders.has_next %}
+        <a class="ajax-link" href="{% url 'order_summary' %}?page={{ orders.next_page_number }}">Dále</a>
+      {% endif %}
+  </div>
+</div>
