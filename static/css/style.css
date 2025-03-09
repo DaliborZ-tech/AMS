@@ -392,7 +392,7 @@ h2, p {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5em;
-  background-color: var(--accent-clr);
+  background-color: var(--hover-clr);
   color: var(--text-clr);
   font-weight: bold;
   cursor: pointer;
@@ -400,9 +400,11 @@ h2, p {
 }
 .filter-button button:hover {
   background-color: var(--hover-clr);
+  box-shadow: 0 0 7px var(--shadow-clr);
 }
-
-
+.filter-button button svg {
+  margin-right: 0.5em;
+}
 
 
 footer{
