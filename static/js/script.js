@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Po načtení partial šablony zaregistrujeme eventy znovu
             registerAjaxLinks();
             registerLoginForm();
+            registerFilterForm();
           } else {
             console.error("Element .content-wrapper nebyl nalezen!");
           }
@@ -127,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
               // Znovu zaregistrujeme AJAX odkazy a eventy formulářů
               registerAjaxLinks();
               registerLoginForm();
+              registerFilterForm();
             } else {
               console.error("Element .content-wrapper nebyl nalezen!");
             }
@@ -168,8 +170,63 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   }
+  function registerFilterForm() {
+    console.log("Spouštím registerFilterForm");
+
+  const filterForm = document.getElementById("filter-form");
+  if (!filterForm) {
+    console.log("Element s id 'filter-form' nebyl nalezen.");
+    return;
+  }
+
+
+  // Volitelně: odstraníme již zavěšený listener,
+  // pokud jej máme uloženého na vlastnosti elementu.
+  if (filterForm._submitListener) {
+    filterForm.removeEventListener("submit", filterForm._submitListener);
+  }
+
+  const submitListener = event => {
+    console.log("Odeslání filtru zachyceno.");
+    event.preventDefault();
+
+    // Serializace formuláře do query stringu
+    const formData = new FormData(filterForm);
+    const params = new URLSearchParams(formData);
+    const url = filterForm.getAttribute("action") + "?" + params.toString();
+    console.log("Odesílám URL:", url);
+
+    // AJAX fetch požadavku
+    fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+      .then(response => {
+        if (!response.ok) throw new Error("Chyba při filtrování");
+        return response.text();
+      })
+      .then(html => {
+        console.log("Data načtena, aktualizuji obsah.");
+        const container = document.querySelector(".content-wrapper");
+        if (container) {
+          container.innerHTML = html;
+          // Znovu zavěsit události na nové prvky z partial šablony
+          registerAjaxLinks();
+          registerFilterForm();
+        } else {
+          console.error("Element .content-wrapper nenalezen!");
+        }
+      })
+      .catch(error => {
+        console.error("Došlo k chybě při načtení filtrovaných dat:", error);
+      });
+    };
+
+  // Uložíme listener do vlastnosti elementu pro možnost budoucího odstranění
+  filterForm._submitListener = submitListener;
+  filterForm.addEventListener("submit", submitListener);
+  }
+
 
   // Po načtení DOM zaregistrujeme AJAX odkazy (paginátor) a formulář
   registerAjaxLinks();
   registerLoginForm();
+  registerFilterForm();
 });

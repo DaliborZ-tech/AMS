@@ -1,5 +1,26 @@
 <div class="order-summary-container">
-  <h2>Přehled objednávek</h2>
+  <h2>Přehled zakázek</h2>
+  <!-- Filtrační formulář -->
+  <form id="filter-form" class="filter-form" action="{% url 'order_summary' %}" method="get">
+    <input type="text" name="order_number" placeholder="Číslo zakázky" value="{{ request.GET.order_number|default:'' }}">
+    <input type="text" name="mandant" placeholder="Mandant" value="{{ request.GET.mandant|default:'' }}">
+    <select name="store">
+      <option value="">Všechny sklady</option>
+      {% for st in stores %}
+        <option value="{{ st.id }}" {% if request.GET.store == st.id|stringformat:"s" %}selected{% endif %}>{{ st.store }}</option>
+      {% endfor %}
+    </select>
+    Období evidence:
+    <input type="date" name="evidence_start" value="{{ request.GET.evidence_start|default:'' }}"> –
+    <input type="date" name="evidence_end" value="{{ request.GET.evidence_end|default:'' }}">
+    <select name="team">
+      <option value="">Všechny týmy</option>
+      {% for t in teams %}
+        <option value="{{ t.id }}" {% if request.GET.team == t.id|stringformat:"s" %}selected{% endif %}>{{ t.company }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Filtrovat</button>
+  </form>
   <table class="order-table">
     <thead>
       <tr>
@@ -39,12 +60,13 @@
     </tbody>
   </table>
   <div class="styled-pagination">
-      {% if orders.has_previous %}
-        <a class="ajax-link" href="{% url 'order_summary' %}?page={{ orders.previous_page_number }}">Zpět</a>
-      {% endif %}
-      <span>Strana {{ orders.number }} z {{ orders.paginator.num_pages }}</span>
-      {% if orders.has_next %}
-        <a class="ajax-link" href="{% url 'order_summary' %}?page={{ orders.next_page_number }}">Dále</a>
-      {% endif %}
+    {% if orders.has_previous %}
+      <a class="ajax-link" href="{% url 'order_summary' %}?page={{ orders.previous_page_number }}{% if request.GET.order_number %}&order_number={{ request.GET.order_number }}{% endif %}{% if request.GET.mandant %}&mandant={{ request.GET.mandant }}{% endif %}{% if request.GET.store %}&store={{ request.GET.store }}{% endif %}{% if request.GET.evidence_start %}&evidence_start={{ request.GET.evidence_start }}{% endif %}{% if request.GET.evidence_end %}&evidence_end={{ request.GET.evidence_end }}{% endif %}{% if request.GET.team %}&team={{ request.GET.team }}{% endif %}">← Zpět</a>
+    {% endif %}
+    <span>Strana {{ orders.number }} z {{ orders.paginator.num_pages }}</span>
+    {% if orders.has_next %}
+      <a class="ajax-link" href="{% url 'order_summary' %}?page={{ orders.next_page_number }}{% if request.GET.order_number %}&order_number={{ request.GET.order_number }}{% endif %}{% if request.GET.mandant %}&mandant={{ request.GET.mandant }}{% endif %}{% if request.GET.store %}&store={{ request.GET.store }}{% endif %}{% if request.GET.evidence_start %}&evidence_start={{ request.GET.evidence_start }}{% endif %}{% if request.GET.evidence_end %}&evidence_end={{ request.GET.evidence_end }}{% endif %}{% if request.GET.team %}&team={{ request.GET.team }}{% endif %}">Další →</a>
+    {% endif %}
+  </div>
   </div>
 </div>
