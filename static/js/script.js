@@ -142,34 +142,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Funkce pro registraci posluchače události formuláře pro přihlášení
   function registerLoginForm() {
-    const loginForm = document.querySelector(".login-form");
-    if (loginForm) {
-      loginForm.addEventListener("submit", event => {
-        event.preventDefault();
-        const formData = new FormData(loginForm);
+  const loginForm = document.querySelector(".login-form");
+  if (loginForm) {
+    loginForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const formData = new FormData(loginForm);
 
-        fetch(loginForm.action, {
-          method: "POST",
-          body: formData,
-          headers: {
-            "X-Requested-With": "XMLHttpRequest"
+      fetch(loginForm.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            console.log("Přihlášení bylo úspěšné.");
+            // Přesměrujeme na home
+            window.location.href = '/';
+          } else {
+            console.error("Přihlášení selhalo.");
           }
         })
-          .then(response => response.json())
-          .then(result => {
-            if (result.success) {
-              // Aktualizujeme odkaz nebo provedeme další potřebné akce
-              console.log("Přihlášení bylo úspěšné.");
-            } else {
-              console.error("Přihlášení selhalo.");
-            }
-          })
-          .catch(error => {
-            console.error("Došlo k chybě při odesílání formuláře:", error);
-          });
+        .catch(error => {
+          console.error("Došlo k chybě při odesílání formuláře:", error);
+        });
       });
     }
   }
+  function registerLogoutLink() {
+  const logoutLink = document.querySelector("a.logout");
+  if (logoutLink) {
+    logoutLink.addEventListener("click", event => {
+      event.preventDefault();
+      fetch(logoutLink.href, {
+        method: "GET",
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+      })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            console.log("Odhlášení bylo úspěšné.");
+            window.location.href = result.redirect_url || '/';
+          } else {
+            console.error("Odhlášení selhalo.");
+          }
+        })
+        .catch(error => {
+          console.error("Došlo k chybě při odesílání požadavku na odhlášení:", error);
+        });
+      });
+    }
+  }
+
   function registerFilterForm() {
     console.log("Spouštím registerFilterForm");
 
@@ -229,4 +255,5 @@ document.addEventListener("DOMContentLoaded", () => {
   registerAjaxLinks();
   registerLoginForm();
   registerFilterForm();
+  registerLogoutLink();
 });

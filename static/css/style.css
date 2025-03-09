@@ -360,6 +360,49 @@ h2, p {
   margin: 0 10px;
   font-weight: bold;
 }
+.filter-form {
+  display: grid;
+  /* Tři sloupce pro pole a čtvrtý sloupec pro tlačítko */
+  grid-template-columns: repeat(3, 1fr) auto;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--field-clr);
+  border-radius: 0.5em;
+  margin-bottom: 1rem;
+}
+.filter-button {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.field input,
+.field select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--line-clr);
+  border-radius: 0.25em;
+  background-color: var(--base-clr);
+  color: var(--text-clr);
+}
+.filter-button button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5em;
+  background-color: var(--accent-clr);
+  color: var(--text-clr);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.filter-button button:hover {
+  background-color: var(--hover-clr);
+}
+
+
 
 
 footer{

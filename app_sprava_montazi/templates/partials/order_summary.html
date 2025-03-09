@@ -2,25 +2,41 @@
   <h2>Přehled zakázek</h2>
   <!-- Filtrační formulář -->
   <form id="filter-form" class="filter-form" action="{% url 'order_summary' %}" method="get">
+  <div class="field order-number">
     <input type="text" name="order_number" placeholder="Číslo zakázky" value="{{ request.GET.order_number|default:'' }}">
+  </div>
+  <div class="field mandant">
     <input type="text" name="mandant" placeholder="Mandant" value="{{ request.GET.mandant|default:'' }}">
+  </div>
+  <div class="field evidence-start">
+    <input type="date" name="evidence_start" placeholder="Evidence od" value="{{ request.GET.evidence_start|default:'' }}">
+  </div>
+
+  <div class="field store">
     <select name="store">
       <option value="">Všechny sklady</option>
       {% for st in stores %}
         <option value="{{ st.id }}" {% if request.GET.store == st.id|stringformat:"s" %}selected{% endif %}>{{ st.store }}</option>
       {% endfor %}
     </select>
-    Období evidence:
-    <input type="date" name="evidence_start" value="{{ request.GET.evidence_start|default:'' }}"> –
-    <input type="date" name="evidence_end" value="{{ request.GET.evidence_end|default:'' }}">
+  </div>
+  <div class="field team">
     <select name="team">
       <option value="">Všechny týmy</option>
       {% for t in teams %}
         <option value="{{ t.id }}" {% if request.GET.team == t.id|stringformat:"s" %}selected{% endif %}>{{ t.company }}</option>
       {% endfor %}
     </select>
+  </div>
+  <div class="field evidence-end">
+    <input type="date" name="evidence_end" placeholder="Evidence do" value="{{ request.GET.evidence_end|default:'' }}">
+  </div>
+
+  <div class="filter-button">
     <button type="submit">Filtrovat</button>
-  </form>
+  </div>
+</form>
+
   <table class="order-table">
     <thead>
       <tr>
