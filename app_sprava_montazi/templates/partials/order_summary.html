@@ -102,5 +102,4 @@
       <a class="ajax-link" href="{% url 'order_summary' %}?page={{ orders.next_page_number }}{% if request.GET.order_number %}&order_number={{ request.GET.order_number }}{% endif %}{% if request.GET.mandant %}&mandant={{ request.GET.mandant }}{% endif %}{% if request.GET.store %}&store={{ request.GET.store }}{% endif %}{% if request.GET.evidence_start %}&evidence_start={{ request.GET.evidence_start }}{% endif %}{% if request.GET.evidence_end %}&evidence_end={{ request.GET.evidence_end }}{% endif %}{% if request.GET.team %}&team={{ request.GET.team }}{% endif %}">Další →</a>
     {% endif %}
   </div>
-  </div>
 </div>

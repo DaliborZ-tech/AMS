@@ -21,6 +21,14 @@ class OrderSummaryView(LoginRequiredMixin, TemplateView):
         # Základní queryset všech zakázek (seřazený od nejnovější)
         orders_qs = Order.objects.all().select_related('store', 'place', 'team', 'status').order_by('-created')
         # Aplikace filtrů podle GET parametrů:
+        if self.request.GET.get('open'):
+            orders_qs = orders_qs.filter(status__status__in=["New", "Adviced"])
+        if self.request.GET.get('realized'):
+            orders_qs = orders_qs.filter(status__status__in=["Realized"])
+        if self.request.GET.get('canceled'):
+            orders_qs = orders_qs.filter(status__status__in=["Canceled"])
+        if self.request.GET.get('billed'):
+            orders_qs = orders_qs.filter(status__status__in=["Billed"])
         order_no = self.request.GET.get('order_number')
         if order_no:
             orders_qs = orders_qs.filter(order_number__icontains=order_no)

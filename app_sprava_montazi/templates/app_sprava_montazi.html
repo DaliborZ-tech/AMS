@@ -38,10 +38,10 @@
                 <ul class="sub-menu">
                     <div>
                         <li><a class="anchoresidebar" href="{% url 'order_summary' %}" data-protected="true">Přehled</a></li>
-                        <li><a class="anchoresidebar" href="#" data-protected="true">Otevřené</a></li>
-                        <li><a class="anchoresidebar" href="#" data-protected="true">Relizované</a></li>
-                        <li><a class="anchoresidebar" href="#" data-protected="true">Zrušené</a></li>
-                        <li><a class="anchoresidebar" href="#" data-protected="true">K vyúčtování</a></li>
+                        <li><a class="anchoresidebar" href="{% url 'order_summary' %}?open=1" data-protected="true">Otevřené</a></li>
+                        <li><a class="anchoresidebar" href="{% url 'order_summary' %}?realized=1" data-protected="true">Relizované</a></li>
+                        <li><a class="anchoresidebar" href="{% url 'order_summary' %}?canceled=1" data-protected="true">Zrušené</a></li>
+                        <li><a class="anchoresidebar" href="{% url 'order_summary' %}?billed=1" data-protected="true">Vyúčtované</a></li>
                     </div>
                 </ul>
             </li>
