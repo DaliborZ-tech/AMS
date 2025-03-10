@@ -8,8 +8,9 @@ from django.db.models import Model, DecimalField, CharField, \
 
 STATUS_CHOICES = [
     ('New', 'Nový'),
-    ('Adviced', 'Zatermínován'),
-    ('Realized', 'Realizovaný'),
+    ('Adviced', 'Zatermínováno'),
+    ('Realized', 'Realizováno'),
+    ('Canceled', 'Zrušeno'),
     ('Billed', 'Vyúčtovaný'),
 ]
 

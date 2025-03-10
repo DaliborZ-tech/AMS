@@ -44,7 +44,7 @@ class OrderSummaryView(LoginRequiredMixin, TemplateView):
             elif end_date:
                 orders_qs = orders_qs.filter(evidence_term__lte=end_date)
         # Stránkování (10 záznamů na stránku)
-        paginator = Paginator(orders_qs, 1)
+        paginator = Paginator(orders_qs, 50)
         page_number = self.request.GET.get('page', 1)
         try:
             orders_page = paginator.page(page_number)

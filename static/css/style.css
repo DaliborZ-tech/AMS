@@ -286,8 +286,6 @@ h2, p {
     background-color: var(--hover-clr);
     box-shadow: 0 0 7px var(--shadow-clr);
 }
-
-
 .btn-primary {
     /* případně další vlastnosti nebo jen ponechat defaultní styl z .btn */
 }
@@ -297,32 +295,45 @@ h2, p {
 .order-summary-container {
   margin: 20px;
   padding: 20px;
+  max-height: 100%;
+  overflow-y: auto;
   background-color: var(--base-clr);
   border: 1px solid var(--line-clr);
   box-shadow: 0 0 7px var(--shadow-clr);
   border-radius: 8px;
 }
 
-.order-summary-container h2 {
+.order-summary-container h4 {
   color: var(--text-clr);
-  margin-bottom: 15px;
+  margin-top: 0;
+  margin-bottom: 10px;
   text-align: center;
 }
-
+.order-summary-container h4 svg {
+    margin-right: 0.5em;
+}
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 400px;
+}
 .order-table {
   width: 100%;
   border-collapse: collapse;
   background-color: var(--field-clr);
   color: var(--text-clr);
 }
-
 .order-table th,
 .order-table td {
-  padding: 12px 15px;
+  padding: 5px;
   border: 1px solid var(--line-clr);
   text-align: left;
+  font-size: 12px;
 }
-
+.order-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: var(--table-header-clr);
+  z-index: 1;}
 .order-table thead {
   background-color: var(--table-header-clr);
 }
@@ -335,7 +346,7 @@ h2, p {
   background-color: var(--hover-clr);
 }
 .styled-pagination {
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -365,12 +376,12 @@ h2, p {
   /* Tři sloupce pro pole a čtvrtý sloupec pro tlačítko */
   grid-template-columns: repeat(3, 1fr) auto;
   grid-template-rows: auto auto;
-  gap: 1rem;
+  gap: 0.8rem;
   align-items: center;
-  padding: 1rem;
+  padding: 0.8rem;
   background-color: var(--field-clr);
   border-radius: 0.5em;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 .filter-button {
   grid-column: 4;
@@ -387,6 +398,7 @@ h2, p {
   border-radius: 0.25em;
   background-color: var(--base-clr);
   color: var(--text-clr);
+  font-size: 10px;
 }
 .filter-button button {
   padding: 0.75rem 1.5rem;
