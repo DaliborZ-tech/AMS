@@ -1,0 +1,82 @@
+<div class="order-summary-container">
+  <h4>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16"><path d="M5.5 7a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm5 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/><path fill-rule="evenodd" d="M0 13s1-1 4-1 4 1 4 1v1H0v-1zm8 0s1-1 4-1 4 1 4 1v1H8v-1z"/>
+    </svg>
+    Přehled týmů
+  </h4>
+
+  <!-- Filtrační formulář -->
+  <form id="filter-form" class="filter-form team-filter" action="{% url 'team_summary' %}" method="get">
+    <div class="filter-row">
+      <div class="field">
+        <label for="filter-company">
+          <small>Společnost</small>
+        </label>
+        <input type="text" id="filter-company" name="company" placeholder="Společnost" value="{{ request.GET.company|default:'' }}">
+      </div>
+      <div class="field">
+        <label for="filter-city">
+          <small>Město</small>
+        </label>
+        <input type="text" id="filter-city" name="city" placeholder="Město" value="{{ request.GET.city|default:'' }}">
+      </div>
+      <div class="field">
+        <label for="filter-active">
+          <small>Aktivní</small>
+        </label>
+        <select id="filter-active" name="active">
+          <option value="">Všechny</option>
+          <option value="true" {% if request.GET.active == "true" %}selected{% endif %}>Ano</option>
+          <option value="false" {% if request.GET.active == "false" %}selected{% endif %}>Ne</option>
+        </select>
+      </div>
+      <div class="filter-button">
+        <button type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter-square" viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+            <path d="M6 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+          </svg>
+          Filtrovat
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Tabulka týmů -->
+  <div class="table-wrapper">
+    <table class="order-table">
+      <thead>
+        <tr>
+          <th>Společnost</th>
+          <th>Město</th>
+          <th>Telefon</th>
+          <th>Email</th>
+          <th>Cena/hodinu</th>
+          <th>Cena/km</th>
+          <th>Region</th>
+          <th>Podmínky</th>
+          <th>Aktivní</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for team in teams %}
+        <tr>
+          <td>{{ team.company }}</td>
+          <td>{{ team.city }}</td>
+          <td>{{ team.phone }}</td>
+          <td>{{ team.email }}</td>
+          <td>{{ team.price_per_hour }}</td>
+          <td>{{ team.price_per_km }}</td>
+          <td>{{ team.region }}</td>
+          <td>{{ team.terms }}</td>
+          <td>{{ team.active|yesno:"Ano,Ne" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9">Nebyly nalezeny žádné záznamy.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

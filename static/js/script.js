@@ -68,38 +68,59 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Registrováno odkazů načítajících partial:", partialLinks.length);
 
   partialLinks.forEach(link => {
-    // Vynecháme odkaz pro odhlášení
-    if (link.getAttribute("href").includes("/logout/")) return;
+  // Vynecháme odkaz pro odhlášení
+  if (link.getAttribute("href").includes("/logout/")) return;
 
-    link.addEventListener("click", event => {
-      event.preventDefault();
-      console.log("Kliknutí na partial odkaz zachyceno.");
+  link.addEventListener("click", event => {
+    event.preventDefault();
+    console.log("Kliknutí na a.anchoresidebar zachyceno.");
 
-      const url = link.getAttribute("href");
-      fetch(url, {
-        headers: { "X-Requested-With": "XMLHttpRequest" }
+    // Odstraníme aktivní třídu ze všech li elementů v celé oblasti sidebaru
+    document.querySelectorAll("#sidebar li.active").forEach(li => li.classList.remove("active"));
+
+    // Získáme rodičovský li element pro kliknutý odkaz
+    let currentLi = link.closest("li");
+    if (!currentLi) {
+      currentLi = link.parentElement.closest("li");
+    }
+    if (currentLi) {
+      // Přidáme aktivní třídu přímo na rodičovský li
+      currentLi.classList.add("active");
+
+      // Rekurzivně procházíme všechny rodičovské li elementy a přidáme jim aktivní třídu
+      let parentLi = currentLi.parentElement.closest("li");
+      while (parentLi) {
+        parentLi.classList.add("active");
+        parentLi = parentLi.parentElement.closest("li");
+      }
+    }
+
+    // Načteme obsah přes AJAX
+    const url = link.getAttribute("href");
+    fetch(url, {
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Chyba při načítání partial šablony");
+        }
+        return response.text();
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error("Chyba při načítání šablony");
-          }
-          return response.text();
-        })
-        .then(html => {
-          const container = document.querySelector(".content-wrapper");
-          if (container) {
-            container.innerHTML = html;
-            // Po načtení partial šablony zaregistrujeme eventy znovu
-            registerAjaxLinks();
-            registerLoginForm();
-            registerFilterForm();
-          } else {
-            console.error("Element .content-wrapper nebyl nalezen!");
-          }
-        })
-        .catch(error => {
-          console.error("Došlo k chybě:", error);
-        });
+      .then(html => {
+        const container = document.querySelector(".content-wrapper");
+        if (container) {
+          container.innerHTML = html;
+          // Přeregistrace eventů po načtení partial šablony
+          registerAjaxLinks();
+          registerLoginForm();
+          registerFilterForm();
+        } else {
+          console.error("Element .content-wrapper nebyl nalezen!");
+        }
+      })
+      .catch(error => {
+        console.error("Došlo k chybě:", error);
+      });
     });
   });
 
@@ -250,6 +271,32 @@ document.addEventListener("DOMContentLoaded", () => {
   filterForm.addEventListener("submit", submitListener);
   }
 
+  document.addEventListener("DOMContentLoaded", () => {
+  const themeToggleBtn = document.getElementById("theme-toggle");
+
+  if (!themeToggleBtn) {
+    console.warn("Tlačítko 'theme-toggle' nebylo nalezeno.");
+    return;
+  }
+
+  // Inicializace tlačítka pro přepínání témat
+  themeToggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light-mode");
+
+    // Uložení volby do localStorage pro zachování stavu při opětovném načtení stránky
+    if (document.body.classList.contains("light-mode")) {
+      localStorage.setItem("theme", "light");
+    } else {
+      localStorage.setItem("theme", "dark");
+    }
+  });
+
+  // Při načtení stránky nastavíme téma dle uložené volby
+  const userTheme = localStorage.getItem("theme");
+  if (userTheme === "light") {
+    document.body.classList.add("light-mode");
+  }
+});
 
   // Po načtení DOM zaregistrujeme AJAX odkazy (paginátor) a formulář
   registerAjaxLinks();

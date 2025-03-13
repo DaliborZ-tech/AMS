@@ -76,4 +76,49 @@ class OrderSummaryView(LoginRequiredMixin, TemplateView):
                           context)
 
 
+class TeamSummaryView(LoginRequiredMixin, TemplateView):
+    template_name = 'partials/team_summary.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teams_qs = Team.objects.all().order_by('company')
+
+        # Aplikace filtrů podle GET parametrů:
+        company = self.request.GET.get('company')
+        if company:
+            teams_qs = teams_qs.filter(company__icontains=company)
+        city = self.request.GET.get('city')
+        if city:
+            teams_qs = teams_qs.filter(city__icontains=city)
+        active = self.request.GET.get('active')
+        if active:
+            if active.lower() == 'true':
+                teams_qs = teams_qs.filter(active=True)
+            elif active.lower() == 'false':
+                teams_qs = teams_qs.filter(active=False)
+
+        # Stránkování (50 záznamů na stránku)
+        paginator = Paginator(teams_qs, 50)
+        page_number = self.request.GET.get('page', 1)
+        try:
+            teams_page = paginator.page(page_number)
+        except PageNotAnInteger:
+            teams_page = paginator.page(1)
+        except EmptyPage:
+            teams_page = paginator.page(paginator.num_pages)
+        context['teams'] = teams_page
+
+        # Předání seznamu pro dropdown filtry – unikátní hodnoty pro společnosti a města
+        context['companies'] = Team.objects.values_list('company',
+                                                        flat=True).distinct()
+        context['cities'] = Team.objects.values_list('city',
+                                                     flat=True).distinct()
+
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return render(request, self.template_name, context)
+        else:
+            return render(request, self.template_name, context)

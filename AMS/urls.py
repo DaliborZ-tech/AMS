@@ -14,6 +14,9 @@ urlpatterns = [
     path("dashboard/", Dashboard.as_view(), name="dashboard"),
     path("order_summary/", OrderSummaryView.as_view(),
          name="order_summary"),
+    path('team-summary/', TeamSummaryView.as_view(),
+         name='team_summary'),
+
 
 
 

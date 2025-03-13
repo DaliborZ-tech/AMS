@@ -13,6 +13,20 @@
     --login-clr: rgba(0, 255, 255, 0.6);
     --table-header-clr: #3b3c53;
 }
+.light-mode {
+    --base-clr: #f0f0f0;
+    --line-clr: #cccccc;
+    --hover-clr: #aaaaaa;
+    --text-clr: #333333;
+    --accent-clr: #0066cc;
+    --secondary-text-clr: #555555;
+    --gradient-clr: linear-gradient(to right, #f0f0f0, #ffffff, #f0f0f0);
+    --shadow-clr: rgba(0, 0, 0, 0.2);
+    --field-clr: #e0e0e0;
+    --logout-clr: #cc4444;
+    --login-clr: #0088cc;
+    --table-header-clr: #dddddd;
+}
 @keyframes shake {
   0% {
     transform: translate(0, 0) rotate(0deg);
@@ -48,6 +62,22 @@ nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+#theme-toggle {
+  margin: auto 20px;
+  padding: 0.45em;
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--text-clr);
+  background-color: var(--base-clr);
+  border: 1px solid var(--line-clr);
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+#theme-toggle:hover {
+  background-color: var(--hover-clr);
+  box-shadow: 0 0 10px var(--shadow-clr);
 }
 nav a{
     text-decoration: none;
@@ -101,7 +131,7 @@ nav {
     }
 }
 aside{
-    height: calc(100vh - 112px);
+    height: calc(100vh - 115.2px);
     top: 56px;
     position: sticky;
     align-self: start;
@@ -110,8 +140,9 @@ aside{
     box-shadow: 0 0 7px var(--shadow-clr);
 }
 #sidebar{
+    font-size: 14px;
     box-sizing: border-box;
-    height: calc(100vh - 112px);
+    height: calc(100vh - 115.2px);
     width: auto;
     padding: 5px 1em;
     background-color: var(--base-clr);
@@ -131,6 +162,12 @@ aside{
     margin-bottom: 16px;
 }
 #sidebar > ul > li.active > a{
+    color: var(--accent-clr);
+    svg{
+        fill: var(--accent-clr);
+    }
+}
+#sidebar > ul > li.active > ul > div > li.active > a{
     color: var(--accent-clr);
     svg{
         fill: var(--accent-clr);
@@ -217,9 +254,9 @@ aside ul {
 }
 main{
     grid-area: main;
-    max-height: calc(100vh - 112px);
+    max-height: calc(100vh - 115.2px);
     overflow: auto;
-    padding: min(30px, 7%);
+    padding: 0 5px;
 }
 main p{
     color: var(--secondary-text-clr);
@@ -293,8 +330,8 @@ h2, p {
     margin-right: 0.5em;
 }
 .order-summary-container {
-  margin: 20px;
-  padding: 20px;
+  margin: 0;
+  padding: 10px;
   max-height: 100%;
   overflow-y: auto;
   background-color: var(--base-clr);
@@ -417,7 +454,6 @@ h2, p {
 .filter-button button svg {
   margin-right: 0.5em;
 }
-
 
 footer{
     grid-area: footer;
