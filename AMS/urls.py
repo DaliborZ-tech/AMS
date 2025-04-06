@@ -16,6 +16,8 @@ urlpatterns = [
          name="order_summary"),
     path('team-summary/', TeamSummaryView.as_view(),
          name='team_summary'),
+    path("order-detail/<int:pk>/", OrderDetailView.as_view(),
+         name="order_detail"),
 
 
 

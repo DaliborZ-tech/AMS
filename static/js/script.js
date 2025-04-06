@@ -110,6 +110,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const container = document.querySelector(".content-wrapper");
         if (container) {
           container.innerHTML = html;
+          // Tohle zajistí znovuinicializaci HTMX na vloženém HTML obsahu
+          if(typeof htmx !== 'undefined') {
+              htmx.process(container);
+              console.log("HTMX inicializován pro nový obsah");
+          } else {
+              console.warn("HTMX objekt není načten, překontrolujte načtení knihovny HTMX");
+          }
+
           // Přeregistrace eventů po načtení partial šablony
           registerAjaxLinks();
           registerLoginForm();
@@ -216,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   }
-
   function registerFilterForm() {
     console.log("Spouštím registerFilterForm");
 

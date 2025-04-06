@@ -75,7 +75,15 @@
       <tr>
         <td>{{ order.mandant }}</td>
         <td>{{ order.store }}</td>
-        <td>{{ order.order_number }}</td>
+        <td>
+          <a hx-get="{% url 'order_detail' order.id %}"
+             hx-target="body"
+             hx-trigger="click"
+             hx-swap="beforeend"
+             style="cursor: pointer; color: var(--accent-clr); text-decoration: underline;">
+            {{ order.order_number }}
+          </a>
+        </td>
         <td>{{ order.customer_name }}</td>
         <td>{{ order.place.city }}</td>
         <td>{{ order.place.district }}</td>
@@ -103,3 +111,4 @@
     {% endif %}
   </div>
 </div>
+

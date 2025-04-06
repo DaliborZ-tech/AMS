@@ -454,6 +454,116 @@ h2, p {
 .filter-button button svg {
   margin-right: 0.5em;
 }
+/* Vlastní modální okno */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.custom-modal {
+    background-color: var(--base-clr);
+    color: var(--text-clr);
+    box-shadow: 0 0 10px var(--shadow-clr);
+    border-radius: 12px;
+    padding: 20px;
+    width: 60%;
+    max-width: 800px;
+    animation: modalFadeIn 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line-clr);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.custom-modal-close {
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.custom-modal-close:hover {
+    color: var(--accent-clr);
+}
+
+.custom-modal-body {
+    height: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    justify-content: center;
+}
+
+.custom-modal-body label {
+    display: block;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.custom-input {
+    box-sizing: border-box;
+    width: calc(100% - 6px);
+    padding: 8px;
+    margin-top: 5px;
+    margin-right: 3px;
+    margin-left: 3px;
+    background-color: var(--field-clr);
+    border: 1px solid var(--line-clr);
+    border-radius: 5px;
+    color: var(--text-clr);
+}
+
+.custom-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.custom-button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.custom-button.primary {
+    background-color: var(--accent-clr);
+    color: var(--text-clr);
+}
+
+.custom-button.secondary {
+    background-color: var(--line-clr);
+    color: var(--text-clr);
+}
+
+.custom-button.primary:hover {
+    background-color: var(--hover-clr);
+}
+
+.custom-button.secondary:hover {
+    background-color: var(--hover-clr);
+}
 
 footer{
     grid-area: footer;

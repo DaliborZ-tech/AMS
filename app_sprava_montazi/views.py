@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.template.loader import render_to_string
+from django.views.generic import TemplateView, DetailView
 from app_sprava_montazi.models import *
 
 
@@ -122,3 +124,52 @@ class TeamSummaryView(LoginRequiredMixin, TemplateView):
             return render(request, self.template_name, context)
         else:
             return render(request, self.template_name, context)
+
+
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = "partials/order_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        if request.headers.get("HX-Request"):
+            return HttpResponse(
+                render_to_string(self.template_name, context, request=request))
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        self.object.customer_name = request.POST.get("customer_name",
+                                                     self.object.customer_name)
+
+        # upravit contact
+        contact = self.object.contact
+        if contact is None:
+            contact = Contact()
+            self.object.contact = contact
+
+        street_data = request.POST.get("street", "").split(maxsplit=1)
+        if len(street_data) == 2:
+            contact.street, contact.number = street_data
+        else:
+            contact.street = street_data[0]
+            contact.number = ""
+
+        contact.phone = request.POST.get("phone", contact.phone)
+        contact.email = request.POST.get("email", contact.email)
+
+        contact.save()
+        self.object.save()
+
+        # správně připravit kontext pomocí self.object
+        context = self.get_context_data(object=self.object)
+
+        if request.headers.get("HX-Request"):
+            html = render_to_string(self.template_name, context,
+                                    request=request)
+            return HttpResponse(html)
+
+        return super().post(request, *args, **kwargs)
