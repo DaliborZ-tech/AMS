@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from accounts.views import *
+from app_sprava_montazi import views
 from app_sprava_montazi.views import *
 
 urlpatterns = [
@@ -18,6 +19,8 @@ urlpatterns = [
          name='team_summary'),
     path("order-detail/<int:pk>/", OrderDetailView.as_view(),
          name="order_detail"),
+    path("get-place-info/<str:zip_code>/", views.get_place_info,
+         name="get_place_info"),
 
 
 

@@ -3,6 +3,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.views.decorators.http import require_GET
 from django.views.generic import TemplateView, DetailView
 from app_sprava_montazi.models import *
 
@@ -173,3 +174,18 @@ class OrderDetailView(DetailView):
             return HttpResponse(html)
 
         return super().post(request, *args, **kwargs)
+
+@require_GET
+def get_place_info(request, zip_code):
+    try:
+        place = Place.objects.get(zip_code=zip_code)
+        data = {
+            "city": place.city,
+            "district": place.district,
+        }
+    except Place.DoesNotExist:
+        data = {
+            "city": "",
+            "district": "",
+        }
+    return JsonResponse(data)

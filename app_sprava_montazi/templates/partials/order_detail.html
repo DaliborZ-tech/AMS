@@ -1,49 +1,100 @@
 <div class="custom-modal-overlay" id="modal-overlay">
     <div class="custom-modal">
         <div class="custom-modal-header">
-            <h5>Podrobnosti zakázky {{ object.order_number }}</h5>
+            <h5>Podrobnosti zakázky: {{ object.order_number }}</h5>
             <span class="custom-modal-close" onclick="closeModal()">&times;</span>
         </div>
-        <div class="custom-modal-body">
-            <form id="order-edit-form"
+
+        <div class="custom-modal-body form-grid-container">
+            <!-- Levý panel s formulářem -->
+            <form class="form-left-panel"
+                  id="order-edit-form"
                   hx-post="{% url 'order_detail' object.id %}"
                   hx-trigger="submit"
                   hx-target="#modal-overlay"
                   hx-swap="outerHTML">
                 {% csrf_token %}
 
-                <label>Zákazník:</label>
-                <input type="text" name="customer_name" class="custom-input"
-                       value="{{ object.customer_name }}">
+                <fieldset id="customer-form-fields" disabled>
+                    <label>Zákazník:</label>
+                    <input type="text" name="customer_name" class="custom-input"
+                           value="{{ object.customer_name }}">
 
-                <label>Ulice a číslo popisné:</label>
-                <input type="text" name="street" class="custom-input"
-                       value="{{ object.contact.street }} {{ object.contact.number }}">
+                    <label>Ulice a číslo popisné:</label>
+                    <input type="text" name="street" class="custom-input"
+                           value="{{ object.contact.street }} {{ object.contact.number }}">
 
-                <label>Telefon:</label>
-                <input type="text" name="phone" class="custom-input"
-                       value="{{ object.contact.phone }}">
+                    <label>PSČ:</label>
+                    <input type="text" name="zip_code" id="zip_code" class="custom-input"
+                           value="{{ object.contact.zip_code }}">
 
-                <label>E-mail:</label>
-                <input type="email" name="email" class="custom-input"
-                       value="{{ object.contact.email }}">
+                    <label>Město:</label>
+                    <input type="text" name="city" id="city" class="custom-input"
+                           value="{{ object.contact.city }}" readonly>
+
+                    <label>Okres:</label>
+                    <input type="text" name="district" id="district" class="custom-input"
+                           value="{{ object.contact.place.district }}" readonly>
+
+                    <label>Telefon:</label>
+                    <input type="text" name="phone" class="custom-input"
+                           value="{{ object.contact.phone }}">
+
+                    <label>E-mail:</label>
+                    <input type="email" name="email" class="custom-input"
+                           value="{{ object.contact.email }}">
+                </fieldset>
 
                 <div class="custom-modal-footer">
                     <button type="button" class="custom-button secondary"
                             onclick="closeModal()">Zavřít
                     </button>
-                    <button type="submit" class="custom-button primary">
+                    <button type="submit" id="save-changes-btn" class="custom-button primary" disabled>
                         Uložit změny
                     </button>
                 </div>
             </form>
+
+            <!-- Pravý panel pro grid tlačítek -->
+            <div class="button-grid-panel">
+                <div class="button-grid">
+                    <button class="custom-button grid-button" onclick="enableEdit()">Upravit kontakt</button>
+                    <button class="custom-button grid-button" disabled>Akce 2</button>
+                    <button class="custom-button grid-button" disabled>Akce 3</button>
+                    <button class="custom-button grid-button" disabled>Akce 4</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<script>function closeModal() {
+
+<script>
+function closeModal() {
     const modalOverlay = document.getElementById("modal-overlay");
-    if(modalOverlay){
-        modalOverlay.remove();
+    modalOverlay?.remove();
+}
+
+function enableEdit() {
+    const formFields = document.getElementById('customer-form-fields');
+    const saveBtn = document.getElementById('save-changes-btn');
+    formFields.disabled = false;
+    saveBtn.disabled = false;
+}
+
+// Automatické vyplňování města a okresu dle PSČ (AJAX)
+document.getElementById("zip_code").addEventListener("change", function() {
+    const zipCode = this.value.trim();
+
+    if(zipCode.length >= 5) {
+        fetch(`/get-place-info/${zipCode}/`)
+            .then((response) => response.json())
+            .then((data) => {
+                document.getElementById("city").value = data.city || "";
+                document.getElementById("district").value = data.district || "";
+            })
+            .catch((error) => {
+                console.error("Chyba při získávání informací:", error);
+            });
     }
-  }
+});
 </script>
